@@ -1,12 +1,13 @@
-const fs = require('node:fs');
-
 const { Client, Intents, Collection } = require('discord.js');
 const { token, clientId, guildId } = require('./config.json');
+const fs = require('node:fs');
+
 
 // deploy commands
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
+// create client
 const client = new Client({
 	intents: [
 		Intents.FLAGS.GUILDS,
