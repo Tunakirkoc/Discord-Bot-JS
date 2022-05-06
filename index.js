@@ -1,9 +1,11 @@
 const fs = require('node:fs');
 
-const { Client, Intents } = require('discord.js');
-const { token } = require('./config.json');
+const { Client, Intents, Collection } = require('discord.js');
+const { token, clientId, guildId } = require('./config.json');
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+// deploy commands
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 
 const client = new Client({
 	intents: [
@@ -26,13 +28,12 @@ const client = new Client({
 	]
 });
 
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-	console.log(client);
-});
+// Load all events
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
+	console.log(`Loading event ${file}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
@@ -40,5 +41,43 @@ for (const file of eventFiles) {
 	}
 }
 
-// Login to Discord with your client's token
+// Load all commands
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.data.name, command);
+	console.log(`Loading command ${file}`);
+}
+
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const command = client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+});
+
+// Deploy Commands
+const commands = [];
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	commands.push(command.data.toJSON());
+}
+
+const rest = new REST({ version: '9' }).setToken(token);
+
+rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+	.then(() => console.log('Successfully registered application commands.'))
+	.catch(console.error);
+
 client.login(token);
