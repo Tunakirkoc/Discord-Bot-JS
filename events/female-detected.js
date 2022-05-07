@@ -1,10 +1,12 @@
-const { femalePlayer } = require('../config.json');
+const { femaleMember } = require('../config.json');
 
 module.exports = {
     name: 'messageCreate',
     execute(message) {
-        if (femalePlayer.includes(message.author.id)) {
+        if (femaleMember.includes(message.author.id)) {
             message.reply({ files: ["assets/mp4/female-detected-opinion-rejected.mp4"] })
+                .then(console.log)
+                .catch(console.error);
         }
     },
 };
