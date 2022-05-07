@@ -44,7 +44,12 @@ for (const file of eventFiles) {
 
 // Load all commands
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+let commandFiles = fs.readdirSync('./commands').filter(file  =>file.endsWith('.js'));
+const commandFolders = fs.readdirSync('./commands').filter(file => fs.lstatSync(`./commands/${file}`).isDirectory());
+for (const folder of commandFolders) {
+	let commandFoldersFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
+	commandFiles.push(`${folder}/`+ commandFoldersFiles);
+}
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);

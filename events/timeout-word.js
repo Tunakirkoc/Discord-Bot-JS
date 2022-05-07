@@ -1,7 +1,8 @@
+const { listTimeoutWord } = require('../config.json');
+
 module.exports = {
 	name: 'messageCreate',
 	execute(message) {
-		const { listTimeoutWord } = require('../config.json');
 		const guildMember = message.member;
 		for (const timeoutWord of listTimeoutWord) {
 			if (message.content.toLowerCase().includes(timeoutWord)) {
