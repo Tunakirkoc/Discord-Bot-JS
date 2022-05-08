@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'Print Tag When Ready',
+	name: 'Log Client Tag When Ready',
 	event: 'ready',
 	once: true,
 	execute(client) {
