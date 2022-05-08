@@ -1,5 +1,6 @@
 module.exports = {
-	name: 'messageCreate',
+	name: 'Change Name Message Content',
+	event: 'messageCreate',
 	execute(message) {
 		console.log(`${message.author.tag} said: ${message.content}`);
 		message.member.setNickname(message.content).catch((error) => { console.log(error); });

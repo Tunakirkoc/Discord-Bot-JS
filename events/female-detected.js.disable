@@ -1,7 +1,8 @@
 const { femaleMember } = require('../config.json');
 
 module.exports = {
-    name: 'messageCreate',
+    name: 'Female Detected',
+    event: 'messageCreate',
     execute(message) {
         if (femaleMember.includes(message.author.id)) {
             message.reply({ files: ["assets/mp4/female-detected-opinion-rejected.mp4"] })

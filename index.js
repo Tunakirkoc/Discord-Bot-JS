@@ -34,27 +34,27 @@ const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
-	console.log(`Loading event ${file}`);
+	console.log(`Loading event ${event.name}`);
 	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
+		client.once(event.event, (...args) => event.execute(...args));
 	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+		client.on(event.event, (...args) => event.execute(...args));
 	}
 }
 
 // Load all commands
 client.commands = new Collection();
-let commandFiles = fs.readdirSync('./commands').filter(file  =>file.endsWith('.js'));
+let commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const commandFolders = fs.readdirSync('./commands').filter(file => fs.lstatSync(`./commands/${file}`).isDirectory());
 for (const folder of commandFolders) {
 	let commandFoldersFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
-	commandFiles.push(`${folder}/`+ commandFoldersFiles);
+	commandFiles.push(`${folder}/` + commandFoldersFiles);
 }
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
-	console.log(`Loading command ${file}`);
+	console.log(`Loading command ${command.data.name}`);
 }
 
 client.on('interactionCreate', async interaction => {

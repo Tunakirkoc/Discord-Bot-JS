@@ -1,7 +1,8 @@
 const { listTimeoutWord } = require('../config.json');
 
 module.exports = {
-	name: 'messageCreate',
+	name: 'Timeout Word',
+	event: 'messageCreate',
 	execute(message) {
 		const guildMember = message.member;
 		for (const timeoutWord of listTimeoutWord) {
