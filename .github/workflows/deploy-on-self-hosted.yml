@@ -16,7 +16,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-      name: Node.js CI
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -25,6 +24,7 @@ jobs:
         token: "00000000000000000000000000000000000000000000000000000000000"
         clientId: "000000000000000000"
         guildId: "000000000000000000"
+    - name: Node.js CI
     - run: npm install
     - run: npm run build --if-present
     - run: npm test
