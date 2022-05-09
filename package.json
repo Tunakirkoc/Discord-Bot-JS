@@ -4,7 +4,7 @@
   "description": "```bash\r npm init\r npm install discord.js\r npm install @discordjs/rest\r npm install @discordjs/builders\r ```",
   "main": "index.js",
   "scripts": {
-    "test": "index.js"
+    "test": "node index.js"
   },
   "repository": {
     "type": "git",
