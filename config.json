@@ -1,0 +1,17 @@
+{
+	"clientId": "",
+	"guildId": "",
+	"token": "",
+	"listTimeoutWord": [
+		"",
+		""
+	],
+	"femalePlayer": [
+		"",
+		""
+	],
+	"joinToCreate": {
+		"categoryId": "",
+		"channelId": ""
+	}
+}
