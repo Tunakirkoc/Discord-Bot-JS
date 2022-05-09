@@ -3,15 +3,14 @@
 	"guildId": "",
 	"token": "",
 	"listTimeoutWord": [
-		"",
-		""
+		"uwu",
+		"baka"
 	],
 	"femalePlayer": [
-		"",
-		""
+		"921528477058998322"
 	],
 	"joinToCreate": {
-		"categoryId": "",
-		"channelId": ""
+		"categoryId": "972654228143214663",
+		"channelId": "972654247877419018"
 	}
 }
