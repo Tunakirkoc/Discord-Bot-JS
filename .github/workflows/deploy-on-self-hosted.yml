@@ -21,9 +21,9 @@ jobs:
       with:
         files: 'config.json'
       env:
-        token: "00000000000000000000000000000000000000000000000000000000000"
-        clientId: "000000000000000000"
-        guildId: "000000000000000000"
+        token: ${{ secrets.TOKEN }}
+        clientId: ${{ secrets.CLIENT_ID }}
+        guildId: ${{ secrets.GUILD_ID}}
     - name: Node.js CI
     - run: npm install
     - run: npm run build --if-present
