@@ -1,6 +1,7 @@
 const { Client, Intents, Collection } = require('discord.js');
 const { token, clientId, guildId } = require('./config.json');
-const fs = require('node:fs');
+const { getAllFilesFilter } = require('./utils/getAllFiles.js');
+
 
 
 // deploy commands
@@ -30,29 +31,23 @@ const client = new Client({
 });
 
 // Load all events
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
+const eventFiles = getAllFilesFilter('./events', '.js');
 for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
-	console.log(`Loading event ${event.name}`);
+	const event = require(file);
 	if (event.once) {
 		client.once(event.event, (...args) => event.execute(...args));
 	} else {
 		client.on(event.event, (...args) => event.execute(...args));
 	}
+	console.log(`Loading event ${event.name}`);
 }
 
 // Load all commands
 client.commands = new Collection();
-let commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const commandFolders = fs.readdirSync('./commands').filter(file => fs.lstatSync(`./commands/${file}`).isDirectory());
-for (const folder of commandFolders) {
-	let commandFoldersFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
-	commandFiles.push(`${folder}/` + commandFoldersFiles);
-}
 
+const commandFiles = getAllFilesFilter('./commands', '.js');
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(file);
 	client.commands.set(command.data.name, command);
 	console.log(`Loading command ${command.data.name}`);
 }
@@ -76,7 +71,7 @@ client.on('interactionCreate', async interaction => {
 const commands = [];
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(file);
 	commands.push(command.data.toJSON());
 }
 
