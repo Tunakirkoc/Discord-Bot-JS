@@ -2,6 +2,15 @@
 	"clientId": "",
 	"guildId": "",
 	"token": "",
+	"mysqlConnection": {
+		"enable": true,
+		"host": "localhost",
+		"port": 3306,
+		"user": "root",
+		"password": "",
+		"database": "discord",
+		"prefix": "discord_"
+	},
 	"listTimeoutWord": [
 		"uwu",
 		"baka",
