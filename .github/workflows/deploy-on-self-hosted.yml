@@ -29,6 +29,5 @@ jobs:
         clientId: ${{ secrets.CLIENT_ID }}
         guildId: ${{ secrets.GUILD_ID }}
     - run: npm install
-    - run: mkdir /negra
     - run: npm run build --if-present
     - run: pm2 restart Discord-Bot-JS
