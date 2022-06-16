@@ -1,12 +1,33 @@
 const { Client, Intents, Collection } = require('discord.js');
-const { token, clientId, guildId } = require('./config.json');
+const { token, clientId, guildId, mysqlConnection } = require('./config.json');
 const { getAllFilesFilter } = require('./utils/getAllFiles.js');
-
-
+const { Sequelize } = require('sequelize');
 
 // deploy commands
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+
+const db = new Sequelize('mysql://' + mysqlConnection.user + ':' + mysqlConnection.password + '@' + mysqlConnection.host + ':' + mysqlConnection.port + '/' + mysqlConnection.database)
+try {
+	db.authenticate();
+	console.log('Connection has been established successfully.');
+} catch (error) {
+	console.error('Unable to connect to the database:', error);
+}
+
+const Tags = db.define('tags', {
+	name: {
+		type: Sequelize.STRING,
+		unique: true,
+	},
+	description: Sequelize.TEXT,
+	username: Sequelize.STRING,
+	usage_count: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0,
+		allowNull: false,
+	},
+});
 
 // create client
 const client = new Client({
@@ -28,6 +49,10 @@ const client = new Client({
 		Intents.FLAGS.DIRECT_MESSAGE_TYPING,
 		Intents.FLAGS.GUILD_SCHEDULED_EVENTS
 	]
+});
+
+client.once('ready', () => {
+	Tags.sync();
 });
 
 // Load all events
