@@ -1,7 +1,16 @@
 {
-	"clientId": "",
-	"guildId": "",
-	"token": "",
+	"clientId": "974391816797421568",
+	"guildId": "902697896099594290",
+	"token": "OTc0MzkxODE2Nzk3NDIxNTY4.GZh6K1.QaZoJ1C5Qu-UwFW9rZ7Q5JZnRhiQcvr26Q_TEw",
+	"mysqlConnection": {
+		"enable": true,
+		"host": "localhost",
+		"port": 3306,
+		"user": "discord",
+		"password": "12345678",
+		"database": "discord",
+		"prefix": "discord_"
+	},
 	"listTimeoutWord": [
 		"uwu",
 		"baka",

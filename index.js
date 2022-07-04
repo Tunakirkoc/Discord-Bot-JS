@@ -1,12 +1,21 @@
 const { Client, Intents, Collection } = require('discord.js');
-const { token, clientId, guildId } = require('./config.json');
+const { token, clientId, guildId, mysqlConnection} = require('./config.json');
 const { getAllFilesFilter } = require('./utils/getAllFiles.js');
-
-
-
-// deploy commands
+const { Sequelize } = require('sequelize');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+
+// init database
+const db = new Sequelize('mysql://' + mysqlConnection.user + ':' + mysqlConnection.password + '@' + mysqlConnection.host + ':' + mysqlConnection.port + '/' + mysqlConnection.database)
+
+try {
+	db.authenticate();
+	console.log('Connection has been established successfully.');
+} catch (error) {
+	console.error('Unable to connect to the database:', error);
+}
+
+const Users = require('./models/Users.js')(db, Sequelize.DataTypes)
 
 // create client
 const client = new Client({
@@ -80,5 +89,10 @@ const rest = new REST({ version: '9' }).setToken(token);
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);
+
+client.once('ready', () => {
+	db.sync();
+	console.log('Database synced');
+});
 
 client.login(token);
